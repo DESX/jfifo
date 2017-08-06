@@ -15,5 +15,17 @@ int main(int argc __attribute__ ((unused)), char ** argv __attribute__ ((unused)
    printf("rollover: %u r %u\n", jfifo_rollover(&f1)/f1.len,jfifo_rollover(&f1)%f1.len);
    printf("rollover: %u r %u\n", jfifo_rollover(&f2)/f2.len,jfifo_rollover(&f2)%f2.len);
    printf("rollover: %u r %u\n", jfifo_rollover(&f3)/f3.len,jfifo_rollover(&f3)%f3.len);
+   for(unsigned int i = 0;i < UINT_MAX;i++)
+   {
+      if( ~i == (UINT_MAX - i))
+      {
+      }
+      else
+      {
+         printf("fail %u\n",i);
+      }
+      if(! (i%0xfffffff))printf("x%u\n",i);
+   }
+   printf("test complete\n");
    
 }
