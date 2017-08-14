@@ -1,20 +1,19 @@
-.PHONY:TMP
 
-TMP:test0.exe
 
-all:TMP
+all:test0.exe
 
 CC:=gcc
 
 
 test0.o:jfifo.h
 
+CFLAGS:=-std=gnu99 -Wall -Wextra -Wpedantic
+
 %.exe: %.o
 	$(LINK.o) $^ $(LOADLIBES) $(LDLIBS) -o $@
-	./$@
 
-CFLAGS:=-std=gnu99 -Wall -Wextra -Wpedantic
 
 
 clean:
 	rm -f test0.exe
+	rm -f *.o
