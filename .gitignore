@@ -1,2 +1,4 @@
 *.swp
 test0
+*.o
+*.exe
