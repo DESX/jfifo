@@ -15,29 +15,27 @@ typedef struct jfifo
 //
 //the three specific requirement here is this(inifinite precision assumed):
 //
-//0: (rollover - 1) + len <= UINT_MAX
-//1: (rollover - 1) + len*2 > UINT_MAX
+//0: ((rollover - 1) + len) <= UINT_MAX
+//1: ((rollover - 1) + (len*2)) > UINT_MAX
 //2: (rollover % len) == 0
 //
 //NOTE: (rollover - 1) is the max possible value of added/removed
 //len is the max possible value that will be added to added/removed
-//if the sum is larger that UINT_MAX "undifined behavior" will occure
+//if the sum is larger that UINT_MAX "undefined behavior" will occure
 //
-//axiums:
-//
-//axium 1:
-//let A be an unsigned int (limited precision assumed)
+//Axiom 1:
+//let A be an unsigned integer encoded with a finite number of bits
 //~A == (UINT_MAX - A)
 //
-//axium 2:
-//let B and A be and unsigned ints where B > A > 0
-//
-//axium 3:
+//Axiom 2:
 //let B and A be and unsigned ints where B > A > 0
 //B - A < B
 //
-//
+//Axiom 3:
+//let B and A be and unsigned ints where B > A > 0
 //(B % A) <= B - A  
+//
+//Axiom 4:
 //let B and A be and unsigned ints where B > 0
 //(A % B) <  B 
 //
@@ -57,7 +55,7 @@ typedef struct jfifo
 //UINT_MAX - INT_MAX/2 + 1 = UINT_MAX/2 + 2 
 //UINT_MAX - 1 + 1 = UINT_MAX
 //
-//because len > 0 and len <= UINT_MAX/2
+//(because len > 0) and len (<= UINT_MAX/2)
 //len_inv >= UINT_MAX/2 + 2  and len_inv <= UINT_MAX and
 //
 //thus len_inv > len > 0
@@ -67,7 +65,8 @@ typedef struct jfifo
 //thus the returned values is less the len_inv
 //this proves that the return values meets criteria 0
 //
-#define SHIFT_WIDTH(TYPE) ((sizeof(TYPE)*8)-1)
+#define BITS_PER_BYTE 8
+#define SHIFT_WIDTH(TYPE) ((sizeof(TYPE)*BITS_PER_BYTE)-1)
 
 static j_cnt jfifo_rollover(jfifo * t)
 {
