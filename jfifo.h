@@ -1,19 +1,40 @@
 #ifndef JFIFO_H
 #define JFIFO_H
 
-typedef unsigned char j_cnt;
-typedef struct jfifo
+typedef struct
 {
    char * const data;
-   const j_cnt cap;
-   j_cnt added;
-   j_cnt removed;
-}jfifo;
+   const unsigned int max_capacity;
+   unsigned int added_count;
+   unsigned int removed_count;
+}jfifo_t;
+//this is a circular byte buffer class that encodes the entire state of the buffer using only two non constant variables "added" and "removed"
+//these do exactly what their names imply: the total number of bytes added and removed
+//all other information needed to add or remove data can be derived from these two values:
+//1. nose index: index of byte that will be written to the next time a byte is added (initially zero)  
+//2. head index: index of byte that is behind* nose index (initially max_capacity - 1)
+//3. rear index: index of byte that will be removed from the buffer next time a byte is removed (initially zero)
+//4. tail index: index of byte that is behind the rear index (initially max_capacity - 1)
+//5. population: number of bytes on the buffer
+//*behind refers to the index that is on less
+
+//The wording of the above descritions are very intentional
+//"the next time" a byte is added or removed means that this value
+
+
+//Features of this implementaion:
+//1. No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
+//2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added
+//3. Records total added/removed
+//4. All non constant variables are initialized to zero
+//5. 
+
+
 
 //the rollover is the highest possible multiple of len that is less than or 
-//equal to UINT_MAX - len
+//equal to (UINT_MAX - len)
 //
-//the three specific requirement here is this(inifinite precision assumed):
+//the three specific requirements here are:(inifinite precision assumed):
 //
 //0: ((rollover - 1) + len) <= UINT_MAX
 //1: ((rollover - 1) + (len*2)) > UINT_MAX
