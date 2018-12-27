@@ -8,6 +8,7 @@ typedef struct
    unsigned int added_count;
    unsigned int removed_count;
 }jfifo_t;
+
 //this is a circular byte buffer class that encodes the entire state of the buffer using only two non constant variables "added" and "removed"
 //these do exactly what their names imply: the total number of bytes added and removed
 //all other information needed to add or remove data can be derived from these two values:
@@ -21,15 +22,12 @@ typedef struct
 //The wording of the above descritions are very intentional
 //"the next time" a byte is added or removed means that this value
 
-
 //Features of this implementaion:
 //1. No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
 //2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added
 //3. Records total added/removed
 //4. All non constant variables are initialized to zero
 //5. 
-
-
 
 //the rollover is the highest possible multiple of len that is less than or 
 //equal to (UINT_MAX - len)
@@ -86,57 +84,6 @@ typedef struct
 //thus the returned values is less the len_inv
 //this proves that the return values meets criteria 0
 //
-#define BITS_PER_BYTE 8
-#define SHIFT_WIDTH(TYPE) ((sizeof(TYPE)*BITS_PER_BYTE)-1)
-
-static j_cnt jfifo_rollover(jfifo * t)
-{
-   j_cnt len_inv = ~t->cap + 1;
-   return len_inv - (len_inv % t->cap);
-}
-
-static j_cnt jfifo_max_capacity()
-{
-   return (1 << SHIFT_WIDTH(j_cnt));
-}
-
-static j_cnt jfifo_population(jfifo * t)
-{
-   j_cnt population = t->added - t->removed; 
-
-   population += jfifo_rollover(t) * (population >> SHIFT_WIDTH(j_cnt));
-
-   return population;
-}
-
-static j_cnt jfifo_add_byte(jfifo * t, char byte)
-{
-   if(jfifo_population(t) < t->cap)
-   {
-      j_cnt add_index = t->added % t->cap;   
-
-      t->data[add_index] = byte;
-
-      t->added = (t->added + 1) % jfifo_rollover(t);
-   }
-   return 1;
-}
-
-static char * jfifo_remove_byte(jfifo * t)
-{
-   char * val = NULL;
-
-   if(jfifo_population(t) > 0)
-   {
-      j_cnt remove_index = t->removed % t->cap;   
-
-      val = t->data + remove_index; 
-
-      t->removed = (t->removed + 1) % jfifo_rollover(t);
-   }
-
-   return val;
-}
 
 #define JFIFO_CREATE(NAME, CAP)  \
 char NAME##_DATA[CAP];           \

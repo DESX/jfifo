@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include "jfifo.h"
-
+#if 0
 int jfifo_check()
 {
 
@@ -58,12 +58,12 @@ int jfifo_check()
 
    return 0;
 }
+#endif
 
 
-#define NOUSED __attribute__ ((unused))
 
-int main(int argc NOUSED , char ** argv NOUSED)
+int main()
 {
-   jfifo_check();
+   //jfifo_check();
    printf("starting jfifo test 1\n");
 }
