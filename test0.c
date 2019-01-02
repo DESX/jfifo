@@ -1,69 +1,78 @@
 #include <stdio.h>
-#include <limits.h>
-#include <stdbool.h>
+#include <stdlib.h>
 #include "jfifo.h"
 #if 0
-int jfifo_check()
-{
-
-   j_cnt capacity = 0;
-   j_cnt start = 0;
-
-   do
-   {
-
-      do
-      {
-         JFIFO_TEST_CREATE(t, capacity, start);
-
-         j_cnt total_added = 0;
-
-         while(1)
-         {
-            j_cnt added = jfifo_add_byte(&t, 99); 
-
-            if(added > 0)
-            {
-               total_added++; 
-            }
-            else
-            {
-               break;
-            }
-         }
-
-         j_cnt total_removed = 0;
-
-         while(1)
-         {
-            char * removed = jfifo_remove_byte(&t); 
-
-            if(removed != NULL)
-            {
-               total_removed ++;
-            }
-            else
-            {
-               break;
-            }
-         }
-         
-         start++;
-
-      }while (start != 0);
-
-      capacity++;
-
-   }while (capacity != jfifo_max_capacity());
-
-   return 0;
-}
+#include <limits.h>
 #endif
 
 
+#define TST_SIZE 10
 
 int main()
 {
-   //jfifo_check();
-   printf("starting jfifo test 1\n");
+   jfifo_t fifo;
+   char data[TST_SIZE];
+   fifo.max_capacity = TST_SIZE;
+   fifo.data = data;
+   int step = 0;
+   
+	char add= 0;
+	char remove = 0;
+	char remove_prev = -1;
+
+	for(int i = 0; i < 1000;i++)
+	{
+		int cnt = 0;
+      while(1)
+		{
+			cnt = jfifo_add_byte(&fifo, &add);
+         if(cnt == 1)
+            add++;
+         else
+            break;
+		}
+
+      if(jfifo_population(&fifo) != TST_SIZE)
+      {
+        goto fail; 
+      }
+
+      step++;
+      
+      while(1)
+		{
+			cnt = jfifo_remove_byte(&fifo, &remove);
+
+         if(cnt == 1)
+         {
+            char expected = remove_prev+1;
+
+            if(remove != expected)
+            {
+               printf("expected %d but got %d\n",expected,remove);
+               goto fail; 
+            }
+            step++;
+
+            remove_prev = remove;
+         }
+         else
+         {
+            break;
+         } 
+		}
+
+      if(jfifo_population(&fifo) != 0)
+      {
+        goto fail; 
+      }
+
+      step++;
+	}
+   printf("all pass\n");
+   printf("added %d\n",fifo.added_count);
+   printf("removed %d\n",fifo.removed_count);
+   return EXIT_SUCCESS;
+fail:
+   printf("test failed at step %d\n",step);
 }
