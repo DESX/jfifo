@@ -96,17 +96,17 @@ unsigned int jfifo_population(jfifo_t * t)
 {
    j_cnt population = t->added_count - t->removed_count; 
 
-	if(t->added_count < t->removed_count)
-	{
-   	population += jfifo_rollover(t);
-	}
+   if(t->added_count < t->removed_count)
+   {
+      population += jfifo_rollover(t);
+   }
 
    return population;
 }
 
 unsigned int jfifo_add_byte(jfifo_t * t, char * byte)
 {
-	if(byte == NULL) return 0;
+   if(byte == NULL) return 0;
 
    if(jfifo_population(t) < t->max_capacity)
    {
@@ -116,14 +116,14 @@ unsigned int jfifo_add_byte(jfifo_t * t, char * byte)
 
       t->added_count = (t->added_count + 1) % jfifo_rollover(t);
 
-		return 1;
+      return 1;
    }
    return 0;
 }
 
 unsigned int jfifo_remove_byte(jfifo_t * t, char * val)
 {
-	int bytes_removed = 0;
+   int bytes_removed = 0;
 
    if(jfifo_population(t) > 0)
    {
@@ -133,7 +133,7 @@ unsigned int jfifo_remove_byte(jfifo_t * t, char * val)
 
       t->removed_count = (t->removed_count + 1) % jfifo_rollover(t);
 
-		bytes_removed ++;
+      bytes_removed ++;
    }
 
    return bytes_removed;
