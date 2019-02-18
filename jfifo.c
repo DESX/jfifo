@@ -1,11 +1,7 @@
 #include "jfifo.h"
 #include <stdio.h>
 
-//this is a circular byte buffer class that encodes the entire state of the
-//buffer using only two non-constant variables "added" and "removed" these do
-//exactly what their names imply: the total number of bytes added and removed
-//all other information needed to add or remove data can be derived from these
-//two values:
+
 
 //Naming conventions:
 //1. nose : byte that will be written to the next time a byte is added (initially index zero)  
@@ -20,12 +16,6 @@
 //byte index 0 is behind index 1
 //byte index 9 is behind index 0
 
-//Features of this implementaion:
-//1. No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
-//2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added.
-//3. Records total added/removed(provided no rollover occures)
-//4. All non constant variables are initialized to zero
-//5. 
 
 //rollover explained
 //an obvious challenge to using continuously incremented index values is the rollover
