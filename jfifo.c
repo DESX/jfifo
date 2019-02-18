@@ -5,9 +5,9 @@
 
 //Naming conventions:
 //1. nose : byte that will be written to the next time a byte is added (initially index zero)  
-//2. head : byte that is behind* nose index (initially index max_capacity - 1)
+//2. head : byte that is behind* nose index (initially index capacity - 1)
 //3. rear : byte that will be removed from the buffer next time a byte is removed (initially zero)
-//4. tail : byte that is behind the rear index (initially max_capacity - 1)
+//4. tail : byte that is behind the rear index (initially capacity - 1)
 //5. population: number of bytes on the buffer
 //6. vacancies: number of bytes on the buffer
 //
@@ -85,20 +85,20 @@
 
 static j_cnt jfifo_rollover(jfifo_t * t)
 {
-   j_cnt len_inv = ~t->max_capacity + 1;
-   return len_inv - (len_inv % t->max_capacity);
+   j_cnt len_inv = ~t->capacity + 1;
+   return len_inv - (len_inv % t->capacity);
 }
 
 unsigned int jfifo_vacancies(jfifo_t * t)
 {
-   return t->max_capacity - jfifo_population(t); 
+   return t->capacity - jfifo_population(t); 
 }
 
 unsigned int jfifo_population(jfifo_t * t)
 {
-   j_cnt population = t->added_count - t->removed_count; 
+   j_cnt population = t->added - t->removed; 
 
-   if(t->added_count < t->removed_count)
+   if(t->added < t->removed)
    {
       population += jfifo_rollover(t);
    }
@@ -110,13 +110,13 @@ unsigned int jfifo_add_byte(jfifo_t * t, char * byte)
 {
    if(byte == NULL) return 0;
 
-   if(jfifo_population(t) < t->max_capacity)
+   if(jfifo_population(t) < t->capacity)
    {
-      j_cnt add_index = t->added_count % t->max_capacity;   
+      j_cnt add_index = t->added % t->capacity;   
 
       t->data[add_index] = *byte;
 
-      t->added_count = (t->added_count + 1) % jfifo_rollover(t);
+      t->added = (t->added + 1) % jfifo_rollover(t);
 
       return 1;
    }
@@ -129,11 +129,11 @@ unsigned int jfifo_remove_byte(jfifo_t * t, char * val)
 
    if(jfifo_population(t) > 0)
    {
-      j_cnt remove_index = t->removed_count % t->max_capacity;   
+      j_cnt remove_index = t->removed % t->capacity;   
 
       *val = t->data[remove_index]; 
 
-      t->removed_count = (t->removed_count + 1) % jfifo_rollover(t);
+      t->removed = (t->removed + 1) % jfifo_rollover(t);
 
       bytes_removed ++;
    }

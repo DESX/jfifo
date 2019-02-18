@@ -9,8 +9,9 @@
 
 int main()
 {
-   char data[TST_SIZE];
-   jfifo_t fifo={data,TST_SIZE,0,0};
+   const unsigned int buffer_size=10;
+   char data[buffer_size];
+   jfifo_t fifo={data,buffer_size,0,0};
 
    int step = 0;
    
@@ -30,7 +31,7 @@ int main()
             break;
 		}
 
-      if(jfifo_population(&fifo) != TST_SIZE)
+      if(jfifo_population(&fifo) != buffer_size)
       {
         goto fail; 
       }
@@ -68,8 +69,8 @@ int main()
       step++;
 	}
    printf("all pass\n");
-   printf("added %d\n",fifo.added_count);
-   printf("removed %d\n",fifo.removed_count);
+   printf("added %d\n",fifo.added);
+   printf("removed %d\n",fifo.removed);
    return EXIT_SUCCESS;
 fail:
    printf("test failed at step %d\n",step);

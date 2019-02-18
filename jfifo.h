@@ -10,13 +10,13 @@ typedef unsigned int j_cnt;
 typedef struct
 {
    char *const data;
-   unsigned int max_capacity;
-   j_cnt added_count;
-   j_cnt removed_count;
+   const size_t  capacity;
+   j_cnt added;
+   j_cnt removed;
 }jfifo_t;
 
-unsigned int jfifo_population(jfifo_t *);
-unsigned int jfifo_vacancies(jfifo_t *);
+size_t jfifo_population(jfifo_t *);
+size_t jfifo_vacancies(jfifo_t *);
 
 unsigned int jfifo_add_byte(jfifo_t *, char *);
 unsigned int jfifo_remove_byte(jfifo_t *, char *);
