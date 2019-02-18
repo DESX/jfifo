@@ -29,10 +29,10 @@
 
 //rollover explained
 //an obvious challenge to using continuously incremented index values is the rollover
-//its a big problem if after adding 4.2 billion values to your buffer, it start corrupting memory
+//its a big problem if after adding 4.2 billion values to your buffer, adding more values corrupts memory 
 //to deal with this, all operations on added and removed preserve the integrity even when one or both
 //buffers reach their maximum value
-//not that by the ANSI c standard, unsigend integers are garunteed to saturate in a predictable way
+//not that by the ANSI c standard, unsigend integers are garunteed to evaluate to the modul of the overflow.
 //for instance: 
 //UINT_MAX + 1 = 0
 //UINT_MAX + 2 = 1
