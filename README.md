@@ -1,7 +1,14 @@
 # jfifo
 
-Basic fixed size circular byte buffer implementation. This is a This is a minimal example  
+this is a circular byte buffer class that encodes the entire state of the buffer using only two non-constant variables "added" and "removed."
+These do exactly what their names imply: the total number of bytes added and removed all other information needed to add or remove data can be derived from these two values. 
 
+//Features of this implementaion:
+//1. No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
+//2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added.
+//3. Records total added/removed(provided no rollover occures)
+//4. All non constant variables are initialized to zero
+//5. 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
