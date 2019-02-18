@@ -9,7 +9,7 @@ typedef unsigned int j_cnt;
 
 typedef struct
 {
-   char * data;
+   char *const data;
    unsigned int max_capacity;
    j_cnt added_count;
    j_cnt removed_count;

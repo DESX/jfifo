@@ -9,10 +9,9 @@
 
 int main()
 {
-   jfifo_t fifo;
    char data[TST_SIZE];
-   fifo.max_capacity = TST_SIZE;
-   fifo.data = data;
+   jfifo_t fifo={data,TST_SIZE,0,0};
+
    int step = 0;
    
 	char add= 0;
