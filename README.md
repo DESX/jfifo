@@ -4,10 +4,10 @@ This is a circular byte buffer that encodes the entire state of the buffer using
 These do exactly what their names imply: the total number of bytes added and removed all other information needed to add or remove data can be derived from these two values. 
 
 ## Features of this implementaion:
-  *No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
-  *Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added.
-  *Records total added/removed(up to max value of index_type)
-  *All non constant variables are initialized to zero
+  * No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
+  * Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added.
+  * Records total added/removed(up to max value of index_type)
+  * All non constant variables are initialized to zero
   
 ## Getting Started
 
