@@ -1,5 +1,3 @@
-
-
 all:test0.exe
 
 CC:=gcc
