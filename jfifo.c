@@ -89,12 +89,12 @@ static j_cnt jfifo_rollover(jfifo_t * t)
    return len_inv - (len_inv % t->capacity);
 }
 
-unsigned int jfifo_vacancies(jfifo_t * t)
+size_t jfifo_vacancies(jfifo_t * t)
 {
    return t->capacity - jfifo_population(t); 
 }
 
-unsigned int jfifo_population(jfifo_t * t)
+size_t jfifo_population(jfifo_t * t)
 {
    j_cnt population = t->added - t->removed; 
 
@@ -106,7 +106,7 @@ unsigned int jfifo_population(jfifo_t * t)
    return population;
 }
 
-unsigned int jfifo_add_byte(jfifo_t * t, char * byte)
+size_t jfifo_add_byte(jfifo_t * t, char * byte)
 {
    if(byte == NULL) return 0;
 
@@ -123,7 +123,7 @@ unsigned int jfifo_add_byte(jfifo_t * t, char * byte)
    return 0;
 }
 
-unsigned int jfifo_remove_byte(jfifo_t * t, char * val)
+size_t jfifo_remove_byte(jfifo_t * t, char * val)
 {
    int bytes_removed = 0;
 

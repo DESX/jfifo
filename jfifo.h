@@ -18,7 +18,7 @@ typedef struct
 size_t jfifo_population(jfifo_t *);
 size_t jfifo_vacancies(jfifo_t *);
 
-unsigned int jfifo_add_byte(jfifo_t *, char *);
-unsigned int jfifo_remove_byte(jfifo_t *, char *);
+size_t jfifo_add_byte(jfifo_t *, char *);
+size_t jfifo_remove_byte(jfifo_t *, char *);
 
 #endif

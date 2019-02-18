@@ -5,13 +5,12 @@
 #include <limits.h>
 #endif
 
-#define TST_SIZE 10
 
 int main()
 {
-   const unsigned int buffer_size=10;
+   const unsigned int buffer_size = 12;
    char data[buffer_size];
-   jfifo_t fifo={data,buffer_size,0,0};
+   jfifo_t fifo = {data,buffer_size,0,0};
 
    int step = 0;
    
@@ -19,7 +18,7 @@ int main()
 	char remove = 0;
 	char remove_prev = -1;
 
-	for(int i = 0; i < 1000;i++)
+	for(int i = 0; i < 10;i++)
 	{
 		int cnt = 0;
       while(1)
@@ -44,7 +43,7 @@ int main()
 
          if(cnt == 1)
          {
-            char expected = remove_prev+1;
+            char expected = remove_prev + 1;
 
             if(remove != expected)
             {
