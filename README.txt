@@ -1,6 +1,6 @@
 # jfifo
 
-One Paragraph of project description goes here
+Basic fixed size circular byte buffer implementation.  
 
 ## Getting Started
 
@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+
 
 ```
 Give examples
