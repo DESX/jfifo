@@ -5,7 +5,6 @@
 #include <limits.h>
 #endif
 
-
 #define TST_SIZE 10
 
 int main()

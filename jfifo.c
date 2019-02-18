@@ -2,29 +2,41 @@
 #include <stdio.h>
 
 //this is a circular byte buffer class that encodes the entire state of the
-//buffer using only two non constant variables "added" and "removed" these do
+//buffer using only two non-constant variables "added" and "removed" these do
 //exactly what their names imply: the total number of bytes added and removed
 //all other information needed to add or remove data can be derived from these
 //two values:
 
+//Naming conventions:
 //1. nose : byte that will be written to the next time a byte is added (initially index zero)  
 //2. head : byte that is behind* nose index (initially index max_capacity - 1)
 //3. rear : byte that will be removed from the buffer next time a byte is removed (initially zero)
 //4. tail : byte that is behind the rear index (initially max_capacity - 1)
 //5. population: number of bytes on the buffer
 //6. vacancies: number of bytes on the buffer
-//*behind refers to the index that is on less
-
-//The wording of the above descritions are very intentional
-//"the next time" a byte is added or removed means that this value
+//
+//*behind mean "less than includeing wraping"
+//if the buffer size is 10:,
+//byte index 0 is behind index 1
+//byte index 9 is behind index 0
 
 //Features of this implementaion:
 //1. No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
-//2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added
-//3. Records total added/removed
+//2. Thread safe single direction transfer: Data can be added without modifying removed, removed without modifying added.
+//3. Records total added/removed(provided no rollover occures)
 //4. All non constant variables are initialized to zero
 //5. 
 
+//rollover explained
+//an obvious challenge to using continuously incremented index values is the rollover
+//its a big problem if after adding 4.2 billion values to your buffer, it start corrupting memory
+//to deal with this, all operations on added and removed preserve the integrity even when one or both
+//buffers reach their maximum value
+//not that by the ANSI c standard, unsigend integers are garunteed to saturate in a predictable way
+//for instance: 
+//UINT_MAX + 1 = 0
+//UINT_MAX + 2 = 1
+//
 //the rollover is the highest possible multiple of len that is less than or 
 //equal to (UINT_MAX - len)
 //
