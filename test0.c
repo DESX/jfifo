@@ -8,9 +8,8 @@
 
 int main()
 {
-   const unsigned int buffer_size = 12;
-   char data[buffer_size];
-   jfifo_t fifo = {data,buffer_size,0,0};
+   char data[12];
+   jfifo_t fifo = {data,sizeof(data),0,0};
 
    int step = 0;
    
