@@ -1,7 +1,7 @@
-#include "jfifo.h"
 #include <stdio.h>
-
-
+#include <stddef.h>
+#include "jfifo.h"
+#include <signal.h>
 
 //Naming conventions:
 //1. nose : byte that will be written to the next time a byte is added (initially index zero)  
@@ -15,7 +15,6 @@
 //if the buffer size is 10:,
 //byte index 0 is behind index 1
 //byte index 9 is behind index 0
-
 
 //rollover explained
 //an obvious challenge to using continuously incremented index values is the rollover
@@ -81,7 +80,6 @@
 //
 //thus the returned values is less the len_inv
 //this proves that the return values meets criteria 0
-//
 
 static j_cnt jfifo_rollover(jfifo_t * t)
 {
@@ -89,11 +87,15 @@ static j_cnt jfifo_rollover(jfifo_t * t)
    return len_inv - (len_inv % t->capacity);
 }
 
+//
 size_t jfifo_vacancies(jfifo_t * t)
 {
    return t->capacity - jfifo_population(t); 
 }
 
+//total number of item in the fifo
+//if roemoved has lolled over but added has not, the population will be UINTMAX + added - removed  
+//rolover = (UINTMAX - capacity) - (UINTMAX % capacity)
 size_t jfifo_population(jfifo_t * t)
 {
    j_cnt population = t->added - t->removed; 

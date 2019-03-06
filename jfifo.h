@@ -1,10 +1,10 @@
 #ifndef JFIFO_H
 #define JFIFO_H
 
-#ifdef TEST_MODE
-typedef unsigned char j_cnt;
-#else
+#ifndef  JFIFO_INDEX_TYPE
 typedef unsigned int j_cnt;
+#else
+typedef JFIFO_INDEX_TYPE j_cnt;
 #endif
 
 typedef struct
