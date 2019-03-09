@@ -1,8 +1,10 @@
 # jfifo
-
-This is a circular byte buffer that encodes the state of the buffer using integer values "added" and "removed."
-These stor total number of bytes added and removed all other information needed to add or remove data can be derived from these two values. 
-
+Simple fixed-size first-in-first-out circular byte buffer.  
+## usage
+```c
+   char data[12];
+   jfifo_t fifo = {data,sizeof(data),0,0};
+```
 ## Features of this implementaion:
   * No lost bytes: buffer can hold exactly "capacity" bytes with no compromise
   * Thread safe single direction transfer.* Data can be added without modifying removed, removed without modifying added.
