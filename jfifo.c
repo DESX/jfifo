@@ -21,7 +21,7 @@
 //its a big problem if after adding 4.2 billion values to your buffer, adding more values corrupts memory 
 //to deal with this, all operations on added and removed preserve the integrity even when one or both
 //buffers reach their maximum value
-//not that by the ANSI c standard, unsigend integers are garunteed to evaluate to the modul of the overflow.
+//not that by the ANSI c standard, unsigend integers are garunteed to evaluate to the modulo of the overflow.
 //for instance: 
 //UINT_MAX + 1 = 0
 //UINT_MAX + 2 = 1
@@ -29,7 +29,7 @@
 //the rollover is the highest possible multiple of len that is less than or 
 //equal to (UINT_MAX - len)
 //
-//the three specific requirements here are:(inifinite precision assumed):
+//the three specific requirements here are:
 //
 //0: ((rollover - 1) + len) <= UINT_MAX
 //1: ((rollover - 1) + (len*2)) > UINT_MAX
